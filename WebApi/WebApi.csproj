@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ABCStore.ServiceDefaults\ABCStore.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
