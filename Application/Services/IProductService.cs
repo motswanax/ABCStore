@@ -9,5 +9,5 @@ public interface IProductService
     Task<IEnumerable<Product>> GetAllAsync(CancellationToken ct); 
     Task<IEnumerable<Product>> GetProductsByCategoryIdAsync(int categoryId, CancellationToken ct); 
     Task<int> UpdateAsync(Product request, CancellationToken ct); 
-    Task DeleteAsync(int productId, CancellationToken ct);
+    Task DeleteAsync(Product product, CancellationToken ct);
 }
