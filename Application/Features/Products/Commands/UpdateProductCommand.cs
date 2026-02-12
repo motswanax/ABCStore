@@ -14,7 +14,7 @@ public class UpdateProductCommand : IRequest<ResponseWrapper<int>>
     public required UpdateProductRequest Request { get; set; }
 }
 
-public class UpdateProductCommandHandler(IProductService productService, IMapper mapper) 
+public class UpdateProductCommandHandler(IProductService productService) 
     : IRequestHandler<UpdateProductCommand, ResponseWrapper<int>> 
 { 
     public async Task<ResponseWrapper<int>> Handle(UpdateProductCommand request, CancellationToken cancellationToken) 
