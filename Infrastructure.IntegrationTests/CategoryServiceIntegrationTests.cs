@@ -26,8 +26,15 @@ public class CategoryServiceIntegrationTests : IDisposable
 
         // Seed data
         var initializingDataJson = File.ReadAllText("Data\\seeddata.json");
-        var initializingData = JsonSerializer.Deserialize<DataInitializer>(initializingDataJson);
-        _context.Categories.AddRange(initializingData!.Categories);
+        var initializingData = JsonSerializer.Deserialize<DataInitializer>(
+            initializingDataJson,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        initializingData.ShouldNotBeNull();
+        initializingData.Categories.ShouldNotBeNull();
+        initializingData.Products.ShouldNotBeNull();
+
+        _context.Categories.AddRange(initializingData.Categories);
         _context.Products.AddRange(initializingData.Products);
         _context.SaveChanges();
     }
