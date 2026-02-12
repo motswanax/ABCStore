@@ -16,12 +16,12 @@ public class DeleteCategoryCommandHandler(ICategoryService categoryService)
 { 
     public async Task<ResponseWrapper<int>> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken) 
     { 
-        var categoryToDelete = await categoryService.GetByIdAsync(request.CategoryId); 
+        var categoryToDelete = await categoryService.GetByIdAsync(request.CategoryId, cancellationToken); 
         if (categoryToDelete == null) 
         { 
             return new ResponseWrapper<int>().Fail("Category not found."); 
         } 
-        await categoryService.DeleteAsync(categoryToDelete); 
+        await categoryService.DeleteAsync(categoryToDelete, cancellationToken); 
         return new ResponseWrapper<int>().Success(request.CategoryId, "Category deleted successfully."); 
     } 
 }

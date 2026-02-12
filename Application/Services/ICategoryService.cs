@@ -4,9 +4,9 @@ namespace Application.Services;
 
 public interface ICategoryService
 {
-    Task<Category> GetByIdAsync(int categoryId);
-    Task<IEnumerable<Category>> GetAllAsync();
-    Task<Category> CreateAsync(Category category);
-    Task<int> UpdateAsync(Category category);
-    Task DeleteAsync(Category category);
+    Task<Category> GetByIdAsync(int categoryId, CancellationToken ct);
+    Task<IEnumerable<Category>> GetAllAsync(CancellationToken ct);
+    Task<Category> CreateAsync(Category category, CancellationToken ct);
+    Task<int> UpdateAsync(Category category, CancellationToken ct);
+    Task DeleteAsync(Category category, CancellationToken ct);
 }
