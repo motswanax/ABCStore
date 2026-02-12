@@ -1,0 +1,44 @@
+{
+  "categories": [
+    {
+      "id": 1,
+      "name": "Electronics",
+      "description": "Electronic devices and gadgets"
+    },
+    {
+      "id": 2,
+      "name": "Clothing",
+      "description": "Fashionable clothing items"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Laptop",
+      "price": 899.99,
+      "categoryId": 1,
+      "description": "A high-performance laptop for work and gaming"
+    },
+    {
+      "id": 2,
+      "name": "Smartphone",
+      "price": 599.99,
+      "categoryId": 1,
+      "description": "The latest smartphone with advanced features"
+    },
+    {
+      "id": 3,
+      "name": "T-Shirt",
+      "price": 19.99,
+      "categoryId": 2,
+      "description": "A comfortable and stylish t-shirt"
+    },
+    {
+      "id": 4,
+      "name": "Jeans",
+      "price": 49.99,
+      "categoryId": 2,
+      "description": "High-quality denim jeans for all occasions"
+    }
+  ]
+}
