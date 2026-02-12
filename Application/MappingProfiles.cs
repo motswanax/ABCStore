@@ -11,5 +11,6 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<CreateCategoryRequest, Category>();
+        CreateMap<UpdateCategoryRequest, Category>();
     }
 }
