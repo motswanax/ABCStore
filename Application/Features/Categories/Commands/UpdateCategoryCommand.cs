@@ -17,7 +17,7 @@ public class UpdateCategoryCommandHandler(ICategoryService categoryService)
 {
     public async Task<ResponseWrapper<int>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var categoryToUpdate = await categoryService.GetByIdAsync(request.Request.Id);
+        var categoryToUpdate = await categoryService.GetByIdAsync(request.Request.Id, cancellationToken);
         if (categoryToUpdate == null)
         {
             return new ResponseWrapper<int>().Fail("Category not found.");
@@ -25,7 +25,7 @@ public class UpdateCategoryCommandHandler(ICategoryService categoryService)
         categoryToUpdate.Name = request.Request.Name;
         categoryToUpdate.Description = request.Request.Description;
         var updatedCategoryId = await categoryService
-            .UpdateAsync(categoryToUpdate);
+            .UpdateAsync(categoryToUpdate, cancellationToken);
         return new ResponseWrapper<int>().Success(updatedCategoryId, "Category updated successfully.");
     }
 }

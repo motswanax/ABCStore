@@ -20,7 +20,7 @@ public class CreateCategoryCommandHandler(ICategoryService categoryService, IMap
 {
     public async Task<ResponseWrapper<int>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var newCategory = await categoryService.CreateAsync(mapper.Map<CreateCategoryRequest, Category>(request.Request));
+        var newCategory = await categoryService.CreateAsync(mapper.Map<CreateCategoryRequest, Category>(request.Request), cancellationToken);
         return new ResponseWrapper<int>().Success(newCategory.Id, "Category created successfully.");
     }
 }
