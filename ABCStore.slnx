@@ -8,6 +8,10 @@
     <Project Path="Application/Application.csproj" />
     <Project Path="Domain/Domain.csproj" />
   </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/tests/integrations/">
+    <Project Path="Infrastructure.IntegrationTests/Infrastructure.IntegrationTests.csproj" />
+  </Folder>
   <Project Path="ABCStore.AppHost/ABCStore.AppHost.csproj" />
   <Project Path="ABCStore.ServiceDefaults/ABCStore.ServiceDefaults.csproj" />
 </Solution>
