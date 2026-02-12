@@ -1,9 +1,12 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="Application/Application.csproj" />
-    <Project Path="Domain/Domain.csproj" />
+    <Project Path="Common/Common.csproj" />
     <Project Path="Infrastructure/Infrastructure.csproj" />
     <Project Path="WebApi/WebApi.csproj" />
+  </Folder>
+  <Folder Name="/src/core/">
+    <Project Path="Application/Application.csproj" />
+    <Project Path="Domain/Domain.csproj" />
   </Folder>
   <Project Path="ABCStore.AppHost/ABCStore.AppHost.csproj" />
   <Project Path="ABCStore.ServiceDefaults/ABCStore.ServiceDefaults.csproj" />
