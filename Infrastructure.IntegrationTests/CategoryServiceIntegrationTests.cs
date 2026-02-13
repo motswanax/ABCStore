@@ -1,4 +1,6 @@
-﻿using Infrastructure.Contexts;
+﻿using Common.Requests.Categories;
+
+using Infrastructure.Contexts;
 using Infrastructure.IntegrationTests.Data;
 using Infrastructure.Services;
 
@@ -98,6 +100,25 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Empty(result);
     }
 
+    [Fact(DisplayName = "TC5: Get Paginated Categories - Valid Page")]
+    public async Task GetPaginatedCategories_Returns_Paginated_Categories()
+    {
+        // Arrange
+        var request = new CategoryFilterRequest
+        {
+            PageNumber = 1,
+            PageSize = 1
+        };
+        // Act
+        var result = await _categoryService.GetPaginatedAsync(request, CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
+        result.Data.Count().ShouldBe(1);
+        //Assert.NotNull(result);
+        //Assert.NotNull(result.Data);
+        //Assert.Single(result.Data);
+    }
 
     public void Dispose() => _context.Dispose();
 }
