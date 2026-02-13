@@ -1,5 +1,7 @@
 ﻿using Common.Requests.Categories;
 
+using Domain;
+
 using Infrastructure.Contexts;
 using Infrastructure.IntegrationTests.Data;
 using Infrastructure.Services;
@@ -138,6 +140,24 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.NotNull(result);
         //Assert.NotNull(result.Data);
         //Assert.Empty(result.Data);
+    }
+
+    [Theory(DisplayName = "TC7: Create Category - Valid Data")]
+    [MemberData(nameof(CategoryParamData.GetValidCategoriesForCreation), MemberType = typeof(CategoryParamData))]
+    public async Task CreateCategory_With_Valid_Category_Creates_Category(Category category)
+    {
+        // Act
+        var result = await _categoryService.CreateAsync(category, CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeEquivalentTo(category);
+        result.Id.ShouldBeGreaterThan(0);
+        result.Name.ShouldBe(category.Name);
+        result.Description.ShouldBe(category.Description);
+        //Assert.NotNull(result);
+        //Assert.True(result.Id > 0);
+        //Assert.Equal(newCategory.Name, result.Name);
+        //Assert.Equal(newCategory.Description, result.Description);
     }
 
     public void Dispose() => _context.Dispose();
