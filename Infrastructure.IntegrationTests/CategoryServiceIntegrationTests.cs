@@ -39,7 +39,7 @@ public class CategoryServiceIntegrationTests : IDisposable
         _context.SaveChanges();
     }
 
-    [Theory]
+    [Theory(DisplayName = "TC1: Get Category By Valid ID")]
     [InlineData(1)]
     [InlineData(2)]
     public async Task GetCategoryById_With_Valid_Category_Returns_Category(int categoryId)
@@ -57,7 +57,7 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Equal(category.Name, result.Name);
     }
 
-    [Theory]
+    [Theory(DisplayName = "TC2: Get Category By Invalid ID")]
     [InlineData(3)]
     [InlineData(4)]
     public async Task GetCategoryById_With_Invalid_CategoryId_Returns_Null(int categoryId)
@@ -67,6 +67,35 @@ public class CategoryServiceIntegrationTests : IDisposable
         // Assert
         result.ShouldBeNull();
         //Assert.Null(result);
+    }
+
+    [Fact(DisplayName = "TC3: Get All Categories - Data exists")]
+    public async Task GetAllCategories_Returns_All_Categories()
+    {
+        // Arrange
+        var expectedCount = _context.Categories.Count();
+        // Act
+        var result = await _categoryService.GetAllAsync(CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.Count().ShouldBe(expectedCount);
+        //Assert.NotNull(result);
+        //Assert.Equal(expectedCount, result.Count());
+    }
+
+    [Fact(DisplayName = "TC4: Get All Categories - No Data")]
+    public async Task GetAllCategories_Returns_Empty_List_When_No_Categories()
+    {
+        // Arrange
+        _context.Categories.RemoveRange(_context.Categories);
+        _context.SaveChanges();
+        // Act
+        var result = await _categoryService.GetAllAsync(CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeEmpty();
+        //Assert.NotNull(result);
+        //Assert.Empty(result);
     }
 
     public void Dispose() => _context.Dispose();
