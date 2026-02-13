@@ -120,5 +120,25 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Single(result.Data);
     }
 
+    [Fact(DisplayName = "TC6: Get Paginated Categories - Invalid Page")]
+    public async Task GetPaginatedCategories_Returns_Empty_When_Page_Out_Of_Range()
+    {
+        // Arrange
+        var request = new CategoryFilterRequest
+        {
+            PageNumber = 100,
+            PageSize = 10
+        };
+        // Act
+        var result = await _categoryService.GetPaginatedAsync(request, CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull();
+        result.Data.ShouldBeEmpty();
+        //Assert.NotNull(result);
+        //Assert.NotNull(result.Data);
+        //Assert.Empty(result.Data);
+    }
+
     public void Dispose() => _context.Dispose();
 }
