@@ -57,5 +57,17 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Equal(category.Name, result.Name);
     }
 
+    [Theory]
+    [InlineData(3)]
+    [InlineData(4)]
+    public async Task GetCategoryById_With_Invalid_CategoryId_Returns_Null(int categoryId)
+    {
+        // Act
+        var result = await _categoryService.GetByIdAsync(categoryId, CancellationToken.None);
+        // Assert
+        result.ShouldBeNull();
+        //Assert.Null(result);
+    }
+
     public void Dispose() => _context.Dispose();
 }
