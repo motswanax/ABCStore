@@ -39,15 +39,18 @@ public class CategoryServiceIntegrationTests : IDisposable
         _context.SaveChanges();
     }
 
-    [Fact]
-    public async Task GetCategoryById_With_Valid_Category_Returns_Category()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task GetCategoryById_With_Valid_Category_Returns_Category(int categoryId)
     {
         // Arrange
-        var category = _context.Categories.First();
+        //var category = _context.Categories.First();
         // Act
-        var result = await _categoryService.GetByIdAsync(category.Id, CancellationToken.None);
+        var result = await _categoryService.GetByIdAsync(categoryId, CancellationToken.None);
         // Assert
         result.ShouldNotBeNull();
+        result.Id.ShouldBeEquivalentTo(categoryId);
 
         //Assert.NotNull(result);
         //Assert.Equal(category.Id, result!.Id);
