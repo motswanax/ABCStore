@@ -160,5 +160,25 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Equal(newCategory.Description, result.Description);
     }
 
+    [Theory(DisplayName = "TC8: Update Category - Valid Data")]
+    [MemberData(nameof(CategoryParamData.GetValidCategoriesForUpdating), MemberType = typeof(CategoryParamData))]
+    public async Task UpdateCategory_With_Valid_Category_Updates_Category(Category category)
+    {
+        // Arrange
+        var existingCategory = await _categoryService.GetByIdAsync(category.Id, CancellationToken.None);
+        existingCategory.ShouldNotBeNull();
+        existingCategory.Name = category.Name;
+        existingCategory.Description = category.Description;
+        // Act
+        var result = await _categoryService.UpdateAsync(existingCategory, CancellationToken.None);
+        // Assert
+        result.ShouldNotBe(0);
+        result.ShouldBeEquivalentTo(category.Id);
+        //Assert.NotNull(result);
+        //Assert.Equal(category.Id, result.Id);
+        //Assert.Equal(category.Name, result.Name);
+        //Assert.Equal(category.Description, result.Description);
+    }
+
     public void Dispose() => _context.Dispose();
 }

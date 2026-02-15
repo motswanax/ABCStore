@@ -34,7 +34,7 @@ public class CategoryService(ApplicationDbContext context) : ICategoryService
 
     public async Task<Category?> GetByIdAsync(int categoryId, CancellationToken ct)
     {
-        return await context.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == categoryId, ct);
+        return await context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId, ct);
     }
 
     public async Task<PaginatedResponse<CategoryResponse>> GetPaginatedAsync(CategoryFilterRequest request, CancellationToken ct)
