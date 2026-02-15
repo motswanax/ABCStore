@@ -180,5 +180,18 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Equal(category.Description, result.Description);
     }
 
+    [Theory(DisplayName = "TC9: Update Category - Invalid ID")]
+    [MemberData(nameof(CategoryParamData.GetInValidCategoriesForUpdating), MemberType = typeof(CategoryParamData))]
+    public async Task UpdateCategory_With_Invalid_Id_Returns_Zero(Category category)
+    {
+        // Arrange
+        var existingCategory = await _categoryService.GetByIdAsync(category.Id, CancellationToken.None);
+        existingCategory.ShouldBeNull();
+        // Act
+        var act = async () => await _categoryService.UpdateAsync(existingCategory!, CancellationToken.None);
+        // Assert
+        await act.ShouldThrowAsync<ArgumentNullException>();
+    }
+
     public void Dispose() => _context.Dispose();
 }

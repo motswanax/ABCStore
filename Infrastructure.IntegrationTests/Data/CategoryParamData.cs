@@ -61,4 +61,26 @@ public static class CategoryParamData
             }
         };
     }
+
+    public static IEnumerable<object[]> GetInValidCategoriesForUpdating()
+    {
+        yield return new object[]
+        {
+            new Category
+            {
+                Id = 3,
+                Name = "Electronics",
+                Description = "Description for Electronics Updated"
+            }
+        };
+        yield return new object[]
+        {
+            new Category
+            {
+                Id = 4,
+                Name = "Clothing CAT",
+                Description = "Description for Clothing Updated"
+            }
+        };
+    }
 }
