@@ -160,7 +160,18 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Equal(newCategory.Description, result.Description);
     }
 
-    [Theory(DisplayName = "TC8: Update Category - Valid Data")]
+    [Fact(DisplayName = "TC8: Create Category - Invalid Data")]
+    public async Task CreateCategory_With_Invalid_Category_Throws_ArgumentNullException()
+    {
+        // Arrange
+        Category category = null!;
+        // Act
+        var act = async () => await _categoryService.CreateAsync(category, CancellationToken.None);
+        // Assert
+        await act.ShouldThrowAsync<ArgumentNullException>();
+    }
+
+    [Theory(DisplayName = "TC9: Update Category - Valid Data")]
     [MemberData(nameof(CategoryParamData.GetValidCategoriesForUpdating), MemberType = typeof(CategoryParamData))]
     public async Task UpdateCategory_With_Valid_Category_Updates_Category(Category category)
     {
@@ -180,7 +191,7 @@ public class CategoryServiceIntegrationTests : IDisposable
         //Assert.Equal(category.Description, result.Description);
     }
 
-    [Theory(DisplayName = "TC9: Update Category - Invalid ID")]
+    [Theory(DisplayName = "TC10: Update Category - Invalid ID")]
     [MemberData(nameof(CategoryParamData.GetInValidCategoriesForUpdating), MemberType = typeof(CategoryParamData))]
     public async Task UpdateCategory_With_Invalid_Id_Returns_Zero(Category category)
     {
@@ -193,7 +204,7 @@ public class CategoryServiceIntegrationTests : IDisposable
         await act.ShouldThrowAsync<ArgumentNullException>();
     }
 
-    [Theory(DisplayName = "TC10: Delete Category - Valid ID")]
+    [Theory(DisplayName = "TC11: Delete Category - Valid ID")]
     [InlineData(1)]
     [InlineData(2)]
     public async Task DeleteCategory_With_Valid_Id_Deletes_Category(int categoryId)
@@ -206,6 +217,20 @@ public class CategoryServiceIntegrationTests : IDisposable
         var deletedCategory = await _categoryService.GetByIdAsync(categoryId, CancellationToken.None);
         // Assert
         deletedCategory.ShouldBeNull();
+    }
+
+    [Theory(DisplayName = "TC12: Delete Category - Invalid ID")]
+    [InlineData(3)]
+    [InlineData(4)]
+    public async Task DeleteCategory_With_Invalid_Id_Throws_ArgumentNullException(int categoryId)
+    {
+        // Arrange
+        var existingCategory = await _categoryService.GetByIdAsync(categoryId, CancellationToken.None);
+        existingCategory.ShouldBeNull();
+        // Act
+        var act = async () => await _categoryService.DeleteAsync(existingCategory!, CancellationToken.None);
+        // Assert
+        await act.ShouldThrowAsync<ArgumentNullException>();
     }
 
     public void Dispose() => _context.Dispose();
