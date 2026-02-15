@@ -193,5 +193,20 @@ public class CategoryServiceIntegrationTests : IDisposable
         await act.ShouldThrowAsync<ArgumentNullException>();
     }
 
+    [Theory(DisplayName = "TC10: Delete Category - Valid ID")]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task DeleteCategory_With_Valid_Id_Deletes_Category(int categoryId)
+    {
+        // Arrange
+        var existingCategory = await _categoryService.GetByIdAsync(categoryId, CancellationToken.None);
+        existingCategory.ShouldNotBeNull();
+        // Act
+        await _categoryService.DeleteAsync(existingCategory!, CancellationToken.None);
+        var deletedCategory = await _categoryService.GetByIdAsync(categoryId, CancellationToken.None);
+        // Assert
+        deletedCategory.ShouldBeNull();
+    }
+
     public void Dispose() => _context.Dispose();
 }
