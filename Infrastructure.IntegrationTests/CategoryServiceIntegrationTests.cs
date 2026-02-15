@@ -1,4 +1,6 @@
-﻿using Common.Requests.Categories;
+﻿using Application.Services;
+
+using Common.Requests.Categories;
 
 using Domain;
 
@@ -17,7 +19,7 @@ namespace Infrastructure.IntegrationTests;
 public class CategoryServiceIntegrationTests : IDisposable
 {
     private readonly ApplicationDbContext _context;
-    private readonly CategoryService _categoryService;
+    private readonly ICategoryService _categoryService;
 
     public CategoryServiceIntegrationTests()
     {
