@@ -53,5 +53,16 @@ public class ProductServiceIntegrationTests : IDisposable
         result.Id.ShouldBeEquivalentTo(productId);
     }
 
+    [Theory(DisplayName = "TC2: Get Product By Invalid ID")]
+    [InlineData(5)]
+    [InlineData(6)]
+    public async Task GetProductById_With_Invalid_Product_Returns_Null(int productId)
+    {
+        // Act
+        var result = await _productService.GetByIdAsync(productId, CancellationToken.None);
+        // Assert
+        result.ShouldBeNull();
+    }
+
     public void Dispose() => _context.Dispose();
 }
