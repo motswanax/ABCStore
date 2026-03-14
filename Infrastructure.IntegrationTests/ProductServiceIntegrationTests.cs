@@ -76,5 +76,27 @@ public class ProductServiceIntegrationTests : IDisposable
         result.Count().ShouldBe(expectedCount);
     }
 
+    [Theory(DisplayName = "TC4: Get Products by Invalid Category ID")]
+    [InlineData(3)]
+    [InlineData(4)]
+    public async Task GetProductsByCategoryId_With_Invalid_Category_Returns_Empty(int categoryId)
+    {
+        // Act
+        var result = await _productService.GetProductsByCategoryIdAsync(categoryId, CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.ShouldBeEmpty();
+    }
+
+    [Fact(DisplayName = "TC5: Get All Products")]
+    public async Task GetAllProducts_Returns_All_Products()
+    {
+        // Act
+        var result = await _productService.GetAllAsync(CancellationToken.None);
+        // Assert
+        result.ShouldNotBeNull();
+        result.Count().ShouldBe(_context.Products.Count());
+    }
+
     public void Dispose() => _context.Dispose();
 }
