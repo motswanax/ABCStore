@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Exceptions;
+using Application.Services;
 
 using Common.Pagination;
 using Common.Requests.Products;
@@ -16,20 +17,18 @@ public class ProductService(ApplicationDbContext context) : IProductService
 {
     public async Task<Product> CreateAsync(Product request, CancellationToken ct)
     {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
-        await context.Products.AddAsync(request);
+        ArgumentNullException.ThrowIfNull(request);
+        await context.Products.AddAsync(request, ct);
         await context.SaveChangesAsync(ct); 
         return request;
     }
 
     public async Task DeleteAsync(Product product, CancellationToken ct)
     {
-        if (product == null)
-            throw new ArgumentNullException(nameof(product));
+        ArgumentNullException.ThrowIfNull(product);
 
         var existing = await context.Products.FirstOrDefaultAsync(p => p.Id == product.Id, ct)
-            ?? throw new InvalidOperationException($"Product with id {product.Id} was not found.");
+            ?? throw new NotFoundException([$"Product with id {product.Id} was not found."]);
 
         context.Products.Remove(existing);
         await context.SaveChangesAsync(ct);
@@ -108,10 +107,9 @@ public class ProductService(ApplicationDbContext context) : IProductService
 
     public async Task<int> UpdateAsync(Product request, CancellationToken ct)
     {
-        if (request == null)
-            throw new ArgumentNullException(nameof(request));
+        ArgumentNullException.ThrowIfNull(request);
         var existing = await context.Products.FirstOrDefaultAsync(p => p.Id == request.Id, ct) 
-            ?? throw new InvalidOperationException($"Product with id {request.Id} was not found.");
+            ?? throw new NotFoundException([$"Product with id {request.Id} was not found."]);
         context.Entry(existing).CurrentValues.SetValues(request);
         await context.SaveChangesAsync(ct);
         return request.Id;

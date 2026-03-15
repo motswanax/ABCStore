@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Exceptions;
+using Application.Services;
 
 using Common.Requests.Products;
 
@@ -173,7 +174,7 @@ public class ProductServiceIntegrationTests : IDisposable
     public async Task UpdateProduct_With_Invalid_Data_Throws_Exception(Product product)
     {
         // Act & Assert
-        await Should.ThrowAsync<InvalidOperationException>(async () =>
+        await Should.ThrowAsync<NotFoundException>(async () =>
         {
             await _productService.UpdateAsync(product, CancellationToken.None);
         });
@@ -215,7 +216,7 @@ public class ProductServiceIntegrationTests : IDisposable
         Product product = new() { Id = productId, Name = "NonExistentProduct", Price = 10.0m, CategoryId = 1 };
 
         // Act & Assert
-        await Should.ThrowAsync<InvalidOperationException>(async () =>
+        await Should.ThrowAsync<NotFoundException>(async () =>
         {
             await _productService.DeleteAsync(product, CancellationToken.None);
         });

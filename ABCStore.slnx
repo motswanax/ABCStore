@@ -12,6 +12,9 @@
   <Folder Name="/tests/integrations/">
     <Project Path="Infrastructure.IntegrationTests/Infrastructure.IntegrationTests.csproj" />
   </Folder>
+  <Folder Name="/tests/units/">
+    <Project Path="Application.UnitTests/Application.UnitTests.csproj" Id="0ed072d7-fe73-4d9a-a64a-b5b83f163da7" />
+  </Folder>
   <Project Path="ABCStore.AppHost/ABCStore.AppHost.csproj" />
   <Project Path="ABCStore.ServiceDefaults/ABCStore.ServiceDefaults.csproj" />
 </Solution>

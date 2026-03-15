@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.Exceptions;
+using Application.Services;
 
 using Common.Pagination;
 using Common.Requests.Categories;
@@ -23,7 +24,12 @@ public class CategoryService(ApplicationDbContext context) : ICategoryService
 
     public async Task DeleteAsync(Category category, CancellationToken ct)
     {
-        context.Categories.Remove(category);
+        ArgumentNullException.ThrowIfNull(category, nameof(category));
+
+        var existing = await context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id, ct) 
+            ?? throw new NotFoundException([$"Category with id {category.Id} was not found."]);
+
+        context.Categories.Remove(existing);
         await context.SaveChangesAsync(ct);
     }
 
@@ -77,7 +83,10 @@ public class CategoryService(ApplicationDbContext context) : ICategoryService
 
     public async Task<int> UpdateAsync(Category category, CancellationToken ct)
     {
-        context.Entry(category).State = EntityState.Modified; // Mark the entity as modified
+        ArgumentNullException.ThrowIfNull(category, nameof(category));
+        var existing = await context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id, ct) 
+            ?? throw new NotFoundException([$"Category with id {category.Id} was not found."]);
+        context.Entry(existing).CurrentValues.SetValues(category);
         await context.SaveChangesAsync(ct);
         return category.Id;
     }
