@@ -88,6 +88,6 @@ public class CategoryService(ApplicationDbContext context) : ICategoryService
             ?? throw new NotFoundException([$"Category with id {category.Id} was not found."]);
         context.Entry(existing).CurrentValues.SetValues(category);
         await context.SaveChangesAsync(ct);
-        return category.Id;
+        return existing.Id;
     }
 }
