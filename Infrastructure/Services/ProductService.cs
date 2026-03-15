@@ -16,6 +16,8 @@ public class ProductService(ApplicationDbContext context) : IProductService
 {
     public async Task<Product> CreateAsync(Product request, CancellationToken ct)
     {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
         await context.Products.AddAsync(request);
         await context.SaveChangesAsync(ct); 
         return request;

@@ -1,5 +1,9 @@
 ﻿using Application.Services;
 
+using Common.Requests.Products;
+
+using Domain;
+
 using Infrastructure.Contexts;
 using Infrastructure.IntegrationTests.Data;
 using Infrastructure.Services;
@@ -96,6 +100,60 @@ public class ProductServiceIntegrationTests : IDisposable
         // Assert
         result.ShouldNotBeNull();
         result.Count().ShouldBe(_context.Products.Count());
+    }
+
+    [Fact(DisplayName = "TC6: Get All Products - No Products Exist")]
+    public async Task GetAllProducts_Returns_Empty_Products()
+    {
+        // Arrange
+        _context.Products.RemoveRange(_context.Products);
+        await _context.SaveChangesAsync();
+        // Act
+        var result = await _productService.GetAllAsync(CancellationToken.None);
+        // Assert
+        result.ShouldBeEmpty();
+        result.Count().ShouldBe(0);
+    }
+
+    [Fact(DisplayName = "TC7: Get Paginated Products - Valid Page")]
+    public async Task GetPaginatedProducts_Returns_Valid_Page()
+    {
+        // Arrange
+        var request = new ProductFilterRequest
+        {
+            PageNumber = 1,
+            PageSize = 1
+        };
+
+        // Act
+        var result = await _productService.GetPaginatedAsync(request, CancellationToken.None);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Data.ShouldNotBeNull(); 
+        result.Data.Count().ShouldBe(1);
+    }
+
+    [Theory(DisplayName = "TC8: Create Product - Valid Data")]
+    [MemberData(nameof(ProductParamData.GetProductsForCreation), MemberType = typeof(ProductParamData))]
+    public async Task CreateProduct_With_Valid_Data_Returns_Created_Product(Product product)
+    {
+        // Act
+        var result = await _productService.CreateAsync(product, CancellationToken.None);
+
+        // Assert
+        result.ShouldNotBeNull();
+        result.Id.ShouldBeGreaterThan(0);
+    }
+
+    [Fact(DisplayName = "TC9: Create Product - Invalid Data")]
+    public async Task CreateProduct_With_Invalid_Data_Returns_Null()
+    {
+        // Act & Assert
+        await Should.ThrowAsync<ArgumentNullException>(async () =>
+        {
+            await _productService.CreateAsync(null, CancellationToken.None);
+        });
     }
 
     public void Dispose() => _context.Dispose();
