@@ -102,7 +102,11 @@ public class ProductService(ApplicationDbContext context) : IProductService
 
     public async Task<int> UpdateAsync(Product request, CancellationToken ct)
     {
-        context.Entry(request).State = EntityState.Modified; // Mark the entity as modified
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        var existing = await context.Products.FirstOrDefaultAsync(p => p.Id == request.Id, ct) 
+            ?? throw new InvalidOperationException($"Product with id {request.Id} was not found.");
+        context.Entry(existing).CurrentValues.SetValues(request);
         await context.SaveChangesAsync(ct);
         return request.Id;
     }

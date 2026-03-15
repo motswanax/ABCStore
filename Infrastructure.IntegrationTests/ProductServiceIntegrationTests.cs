@@ -156,5 +156,17 @@ public class ProductServiceIntegrationTests : IDisposable
         });
     }
 
+    [Theory(DisplayName = "TC10: Update Product - Valid Data")]
+    [MemberData(nameof(ProductParamData.GetProductsForUpdating), MemberType = typeof(ProductParamData))]
+    public async Task UpdateProduct_With_Valid_Data_Returns_Updated_Product(Product product)
+    {
+        // Act
+        var result = await _productService.UpdateAsync(product, CancellationToken.None);
+
+        // Assert
+        result.ShouldBeEquivalentTo(product.Id);
+        result.ShouldBeGreaterThan(0);
+    }
+
     public void Dispose() => _context.Dispose();
 }
