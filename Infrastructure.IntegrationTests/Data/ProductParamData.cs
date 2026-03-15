@@ -64,4 +64,30 @@ public static class ProductParamData
             }
         };
     }
+
+    public static IEnumerable<object[]> GetInvalidProductsForUpdating()
+    {
+        yield return new object[]
+        {
+            new Product
+            {
+                Id = 5,
+                Name = "Updated Product 5",
+                Description = "Updated Description for Product 5",
+                Price = 19.99m,
+                CategoryId = 1
+            }
+        };
+        yield return new object[]
+        {
+            new Product
+            {
+                Id = 6,
+                Name = "Updated Product 6",
+                Description = "Updated Description for Product 6",
+                Price = 29.99m,
+                CategoryId = 2
+            }
+        };
+    }
 }

@@ -23,10 +23,16 @@ public class ProductService(ApplicationDbContext context) : IProductService
         return request;
     }
 
-    public Task DeleteAsync(Product product, CancellationToken ct)
+    public async Task DeleteAsync(Product product, CancellationToken ct)
     {
-        context.Products.Remove(product); 
-        return context.SaveChangesAsync(ct);
+        if (product == null)
+            throw new ArgumentNullException(nameof(product));
+
+        var existing = await context.Products.FirstOrDefaultAsync(p => p.Id == product.Id, ct)
+            ?? throw new InvalidOperationException($"Product with id {product.Id} was not found.");
+
+        context.Products.Remove(existing);
+        await context.SaveChangesAsync(ct);
     }
 
     public async Task<IEnumerable<Product>> GetAllAsync(CancellationToken ct)

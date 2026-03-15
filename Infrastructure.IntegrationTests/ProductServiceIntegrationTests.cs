@@ -168,5 +168,58 @@ public class ProductServiceIntegrationTests : IDisposable
         result.ShouldBeGreaterThan(0);
     }
 
+    [Theory(DisplayName = "TC11: Update Product - Invalid Data")]
+    [MemberData(nameof(ProductParamData.GetInvalidProductsForUpdating), MemberType = typeof(ProductParamData))]
+    public async Task UpdateProduct_With_Invalid_Data_Throws_Exception(Product product)
+    {
+        // Act & Assert
+        await Should.ThrowAsync<InvalidOperationException>(async () =>
+        {
+            await _productService.UpdateAsync(product, CancellationToken.None);
+        });
+    }
+
+    [Theory(DisplayName = "TC12: Delete Product - Valid ID")]
+    [InlineData(1)]
+    [InlineData(2)]
+    public async Task DeleteProduct_With_Valid_Id_Returns_Deleted_Product(int productId)
+    {
+        // Act
+        var product = await _productService.GetByIdAsync(productId, CancellationToken.None);
+        await _productService.DeleteAsync(product, CancellationToken.None);
+
+        // Assert
+        var deletedProduct = await _productService.GetByIdAsync(productId, CancellationToken.None);
+        deletedProduct.ShouldBeNull();
+    }
+
+    [Theory(DisplayName = "TC13: Delete Product - Invalid ID And Null Argument")]
+    [InlineData(999)]
+    [InlineData(1000)]
+    public async Task DeleteProduct_With_Null_Argument_Throws_Exception(int productId)
+    {
+        // Act & Assert
+        await Should.ThrowAsync<ArgumentNullException>(async () =>
+        {
+            var product = await _productService.GetByIdAsync(productId, CancellationToken.None);
+            await _productService.DeleteAsync(product, CancellationToken.None);
+        });
+    }
+
+    [Theory(DisplayName = "TC14: Delete Product - Invalid ID")]
+    [InlineData(999)]
+    [InlineData(1000)]
+    public async Task DeleteProduct_With_Invalid_Id_Throws_Exception(int productId)
+    {
+        // Arrange
+        Product product = new() { Id = productId, Name = "NonExistentProduct", Price = 10.0m, CategoryId = 1 };
+
+        // Act & Assert
+        await Should.ThrowAsync<InvalidOperationException>(async () =>
+        {
+            await _productService.DeleteAsync(product, CancellationToken.None);
+        });
+    }
+
     public void Dispose() => _context.Dispose();
 }
