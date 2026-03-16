@@ -29,4 +29,16 @@ public class UpdateCategoryCommandHandlerTests
         // Assert
         result.IsSuccessful.ShouldBeTrue();
     }
+
+    [Fact(DisplayName = "TC2: Update Category with Non-Existent Id")]
+    public async Task UpdateCategory_WithNonExistentId_ShouldReturnFail()
+    {
+        // Arrange
+        var handler = new UpdateCategoryCommandHandler(_categoryServiceMock.Object);
+        var request = new UpdateCategoryRequest { Id = 999, Name = "Non-Existent", Description = "This category does not exist." };
+        // Act
+        var result = await handler.Handle(new UpdateCategoryCommand { Request = request }, CancellationToken.None);
+        // Assert
+        result.IsSuccessful.ShouldBeFalse();
+    }
 }
