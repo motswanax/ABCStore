@@ -21,8 +21,8 @@ public class GetCategoryByIdQueryHandler(ICategoryService categoryService, IMapp
         var category = await categoryService.GetByIdAsync(request.CategoryId, cancellationToken);
         if (category == null)
         {
-            return new ResponseWrapper<CategoryResponse>().Fail("Category not found.");
+            return await ResponseWrapper<CategoryResponse>.FailAsync("Category not found.");
         }
-        return new ResponseWrapper<CategoryResponse>().Success(mapper.Map<CategoryResponse>(category));
+        return await ResponseWrapper<CategoryResponse>.SuccessAsync(mapper.Map<CategoryResponse>(category));
     }
 }

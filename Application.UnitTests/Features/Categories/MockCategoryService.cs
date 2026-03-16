@@ -17,6 +17,7 @@ public static class MockCategoryService
     {
         // Database mock
         var mockCategories = GetMockCategories();
+
         // Create mock for ICategoryService methods
         var mockCategoryService = new Mock<ICategoryService>();
         mockCategoryService.Setup(service => service.CreateAsync(It.IsAny<Category>(), It.IsAny<CancellationToken>()))

@@ -19,9 +19,9 @@ public class DeleteCategoryCommandHandler(ICategoryService categoryService)
         var categoryToDelete = await categoryService.GetByIdAsync(request.CategoryId, cancellationToken); 
         if (categoryToDelete == null) 
         { 
-            return new ResponseWrapper<int>().Fail("Category not found."); 
+            return await ResponseWrapper<int>.FailAsync("Category not found."); 
         } 
         await categoryService.DeleteAsync(categoryToDelete, cancellationToken); 
-        return new ResponseWrapper<int>().Success(request.CategoryId, "Category deleted successfully."); 
+        return await ResponseWrapper<int>.SuccessAsync(request.CategoryId, "Category deleted successfully."); 
     } 
 }

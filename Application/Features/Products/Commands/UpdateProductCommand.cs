@@ -22,7 +22,7 @@ public class UpdateProductCommandHandler(IProductService productService)
         var productToUpdate = await productService.GetByIdAsync(request.Request.Id, cancellationToken);
         if (productToUpdate == null) 
         { 
-            return new ResponseWrapper<int>().Fail("Product not found.");
+            return await ResponseWrapper<int>.FailAsync("Product not found.");
         }
 
         productToUpdate.Name = request.Request.Name;
@@ -30,6 +30,6 @@ public class UpdateProductCommandHandler(IProductService productService)
         productToUpdate.Price = request.Request.Price;
         productToUpdate.CategoryId = request.Request.CategoryId;
         var updatedProductId = await productService.UpdateAsync(productToUpdate, cancellationToken);
-        return new ResponseWrapper<int>().Success(updatedProductId, "Product updated successfully."); 
+        return await ResponseWrapper<int>.SuccessAsync(updatedProductId, "Product updated successfully."); 
     }
 }

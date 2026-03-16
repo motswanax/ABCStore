@@ -2,6 +2,7 @@
 
 using AutoMapper;
 
+using Common.Pipelines;
 using Common.Requests.Categories;
 using Common.Wrappers;
 
@@ -11,7 +12,7 @@ using MediatR;
 
 namespace Application.Features.Categories.Commands;
 
-public class CreateCategoryCommand : IRequest<ResponseWrapper<int>>
+public class CreateCategoryCommand : IRequest<ResponseWrapper<int>>, IValidateMe
 {
     public required CreateCategoryRequest Request { get; set; }
 }
@@ -21,6 +22,6 @@ public class CreateCategoryCommandHandler(ICategoryService categoryService, IMap
     public async Task<ResponseWrapper<int>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var newCategory = await categoryService.CreateAsync(mapper.Map<CreateCategoryRequest, Category>(request.Request), cancellationToken);
-        return new ResponseWrapper<int>().Success(newCategory.Id, "Category created successfully.");
+        return await ResponseWrapper<int>.SuccessAsync(newCategory.Id, "Category created successfully.");
     }
 }

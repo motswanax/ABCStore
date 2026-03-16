@@ -22,10 +22,10 @@ public class GetProductsByCategoryIdQueryHandler(IProductService productService,
 
         if (products.Count() == 0)
         {
-            return new ResponseWrapper<IEnumerable<ProductResponse>>().Fail("No products found for the specified category.");
+            return await ResponseWrapper<IEnumerable<ProductResponse>>.FailAsync("No products found for the specified category.");
         }
 
         var productResponses = mapper.Map<IEnumerable<ProductResponse>>(products);
-        return new ResponseWrapper<IEnumerable<ProductResponse>>().Success(productResponses);
+        return await ResponseWrapper<IEnumerable<ProductResponse>>.SuccessAsync(productResponses);
     }
 }

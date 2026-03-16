@@ -19,6 +19,6 @@ public class GetCategoriesQueryHandler(ICategoryService categoryService, IMapper
     public async Task<ResponseWrapper<IEnumerable<CategoryResponse>>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
         var categories = await categoryService.GetAllAsync(cancellationToken);
-        return new ResponseWrapper<IEnumerable<CategoryResponse>>().Success(mapper.Map<IEnumerable<CategoryResponse>>(categories));
+        return await ResponseWrapper<IEnumerable<CategoryResponse>>.SuccessAsync(mapper.Map<IEnumerable<CategoryResponse>>(categories));
     }
 }

@@ -22,8 +22,8 @@ public class GetProductByIdQueryHandler(IProductService productService, IMapper 
         var product = await productService.GetByIdAsync(request.ProductId, cancellationToken); 
         if (product == null) 
         { 
-            return new ResponseWrapper<ProductResponse>().Fail("Product not found."); 
+            return await ResponseWrapper<ProductResponse>.FailAsync("Product not found."); 
         } 
-        return new ResponseWrapper<ProductResponse>().Success(mapper.Map<ProductResponse>(product)); 
+        return await ResponseWrapper<ProductResponse>.SuccessAsync(mapper.Map<ProductResponse>(product)); 
     } 
 }

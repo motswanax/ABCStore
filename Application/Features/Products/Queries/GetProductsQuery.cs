@@ -19,6 +19,6 @@ public class GetProductsQueryHandler(IProductService productService, IMapper map
     public async Task<ResponseWrapper<IEnumerable<ProductResponse>>> Handle(GetProductsQuery request, CancellationToken cancellationToken) 
     { 
         var products = await productService.GetAllAsync(cancellationToken); 
-        return new ResponseWrapper<IEnumerable<ProductResponse>>().Success(mapper.Map<IEnumerable<ProductResponse>>(products)); 
+        return await ResponseWrapper<IEnumerable<ProductResponse>>.SuccessAsync(mapper.Map<IEnumerable<ProductResponse>>(products)); 
     } 
 }

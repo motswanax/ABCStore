@@ -1,4 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Application.Pipelines;
+
+using FluentValidation;
+
+using MediatR;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System.Reflection;
 
@@ -10,6 +16,7 @@ public static class ServiceCollectionExtensions
     {
         var assembly = Assembly.GetExecutingAssembly(); // Get the current assembly
         return services
+            .AddValidatorsFromAssembly(assembly)
             .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly))
             .AddAutoMapper(cfg => cfg.AddMaps(assembly));
     }

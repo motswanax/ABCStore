@@ -20,12 +20,12 @@ public class UpdateCategoryCommandHandler(ICategoryService categoryService)
         var categoryToUpdate = await categoryService.GetByIdAsync(request.Request.Id, cancellationToken);
         if (categoryToUpdate == null)
         {
-            return new ResponseWrapper<int>().Fail("Category not found.");
+            return await ResponseWrapper<int>.FailAsync("Category not found.");
         }
         categoryToUpdate.Name = request.Request.Name;
         categoryToUpdate.Description = request.Request.Description;
         var updatedCategoryId = await categoryService
             .UpdateAsync(categoryToUpdate, cancellationToken);
-        return new ResponseWrapper<int>().Success(updatedCategoryId, "Category updated successfully.");
+        return await ResponseWrapper<int>.SuccessAsync(updatedCategoryId, "Category updated successfully.");
     }
 }

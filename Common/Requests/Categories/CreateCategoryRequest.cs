@@ -1,6 +1,8 @@
-﻿namespace Common.Requests.Categories;
+﻿using Common.Pipelines;
 
-public class CreateCategoryRequest
+namespace Common.Requests.Categories;
+
+public class CreateCategoryRequest : IValidateMe
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;

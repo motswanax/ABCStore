@@ -1,4 +1,6 @@
-﻿namespace Common.Requests.Products;
+﻿using Common.Pipelines;
+
+namespace Common.Requests.Products;
 
 public class CreateProductRequest
 {

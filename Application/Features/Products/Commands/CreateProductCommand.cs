@@ -2,6 +2,7 @@
 
 using AutoMapper;
 
+using Common.Pipelines;
 using Common.Requests.Products;
 using Common.Wrappers;
 
@@ -22,6 +23,6 @@ public class CreateProductCommandHandler(IProductService productService, IMapper
     public async Task<ResponseWrapper<int>> Handle(CreateProductCommand request, CancellationToken cancellationToken) 
     { 
         var newProduct = await productService.CreateAsync(mapper.Map<Product>(request.Request), cancellationToken);
-        return new ResponseWrapper<int>().Success(newProduct.Id, "Product created successfully."); 
+        return await ResponseWrapper<int>.SuccessAsync(newProduct.Id, "Product created successfully."); 
     } 
 }
