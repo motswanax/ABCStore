@@ -39,4 +39,5 @@ public class CreateCategoryCommandHandlerTests
         result.IsSuccessful.ShouldBeTrue();
         result.ShouldNotBeNull();
     }
+
 }
