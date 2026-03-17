@@ -1,6 +1,12 @@
 ﻿using Application.Features.Categories.Commands;
 using Application.Services;
 
+using AutoMapper;
+
+using Common.Responses.Categories;
+
+using Domain;
+
 using Moq;
 
 using Shouldly;

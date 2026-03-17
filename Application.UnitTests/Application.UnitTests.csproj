@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Categories\Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
   </ItemGroup>
 
