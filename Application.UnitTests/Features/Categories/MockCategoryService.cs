@@ -98,6 +98,15 @@ public static class MockCategoryService
         return mockCategoryService;
     }
 
+    public static Mock<ICategoryService> GetEmptyCategoryServiceMocks()
+    {
+        var mockCategoryService = new Mock<ICategoryService>();
+        var emptyCategories = GetEmptyMockCategories();
+        mockCategoryService.Setup(service => service.GetAllAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(emptyCategories);
+        return mockCategoryService;
+    }
+
     private static List<Category> GetMockCategories()
     {
         return
@@ -108,5 +117,10 @@ public static class MockCategoryService
             new() { Id = 4, Name = "Category 4", Description = "Description for Category 4" },
             new() { Id = 5, Name = "Category 5", Description = "Description for Category 5" }
         ];
+    }
+
+    private static List<Category> GetEmptyMockCategories()
+    {
+        return [];
     }
 }
