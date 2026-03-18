@@ -104,6 +104,18 @@ public static class MockCategoryService
         var emptyCategories = GetEmptyMockCategories();
         mockCategoryService.Setup(service => service.GetAllAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(emptyCategories);
+
+        mockCategoryService.Setup(service => service.GetPaginatedAsync(It.IsAny<CategoryFilterRequest>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync((CategoryFilterRequest request, CancellationToken ct) =>
+                new PaginatedResponse<CategoryResponse>
+                {
+                    TotalRecords = 0,
+                    Data = [],
+                    PageNumber = request.PageNumber,
+                    PageSize = request.PageSize,
+                    TotalPages = 0
+                });
+
         return mockCategoryService;
     }
 
