@@ -2,7 +2,7 @@
 
 namespace Common.Requests.Products;
 
-public class CreateProductRequest
+public class CreateProductRequest : IValidateMe
 {
     public string Name { get; set; } = string.Empty;
     public string? Description { get; set; }
