@@ -22,7 +22,7 @@ public class CreateProductCommandHandler(IProductService productService, IMapper
 { 
     public async Task<ResponseWrapper<int>> Handle(CreateProductCommand request, CancellationToken cancellationToken) 
     { 
-        var newProduct = await productService.CreateAsync(mapper.Map<Product>(request.Request), cancellationToken);
+        var newProduct = await productService.CreateAsync(mapper.Map<CreateProductRequest, Product>(request.Request), cancellationToken);
         return await ResponseWrapper<int>.SuccessAsync(newProduct.Id, "Product created successfully."); 
     } 
 }

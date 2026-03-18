@@ -18,6 +18,7 @@ public static class MockProductService
         mockProductService.Setup(service => service.CreateAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Product product, CancellationToken ct) =>
             {
+                ArgumentNullException.ThrowIfNull(product, nameof(product));
                 product.Id = mockProducts.Max(p => p.Id) + 1;
                 mockProducts.Add(product);
                 return product;
@@ -69,7 +70,8 @@ public static class MockProductService
         mockProductService.Setup(service => service.CreateAsync(It.IsAny<Product>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Product product, CancellationToken ct) =>
             {
-                product.Id = mockProducts.Max(p => p.Id) + 1;
+                ArgumentNullException.ThrowIfNull(product, nameof(product));
+                product.Id = (mockProducts.Count == 0 ? 0 : mockProducts.Max(p => p.Id)) + 1;
                 mockProducts.Add(product);
                 return product;
             });

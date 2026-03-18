@@ -22,7 +22,7 @@ public class CreateProductCommandHandlerTests
     {
         _mockProductService = MockProductService.GetProductServiceMocks();
         _mockMapper
-            .Setup(m => m.Map<Product>(It.IsAny<CreateProductRequest>()))
+            .Setup(m => m.Map<CreateProductRequest, Product>(It.IsAny<CreateProductRequest>()))
             .Returns((CreateProductRequest r) => new Product
             {
                 Name = r.Name,
