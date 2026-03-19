@@ -95,7 +95,7 @@ public static class MockProductService
         return 
         [
             new() { Id = 1, CategoryId = 1, Name = "Product 1", Description = "Description for Product 1", Price = 9.99m },
-            new() { Id = 2, CategoryId = 1, Name = "Product 2", Description = "Description for Product 2", Price = 25.99m },
+            new() { Id = 2, CategoryId = 2, Name = "Product 2", Description = "Description for Product 2", Price = 25.99m },
             new() { Id = 3, CategoryId = 1, Name = "Product 3", Description = "Description for Product 3", Price = 35.99m },
         ];
     }

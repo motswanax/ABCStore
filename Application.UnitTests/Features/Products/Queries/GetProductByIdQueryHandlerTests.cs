@@ -15,13 +15,14 @@ public class GetProductByIdQueryHandlerTests
 {
     private readonly Mock<IProductService> _mockProductService;
     private readonly Mock<IMapper> _mockMapper = new();
+    
 
     public GetProductByIdQueryHandlerTests()
     {
         _mockProductService = MockProductService.GetProductServiceMocks();
         _mockMapper
             .Setup(m => m.Map<ProductResponse>(It.IsAny<Domain.Product>()))
-            .Returns((Domain.Product source) => new Common.Responses.Products.ProductResponse
+            .Returns((Domain.Product source) => new ProductResponse
             {
                 Id = source.Id,
                 Name = source.Name,
