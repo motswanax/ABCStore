@@ -14,6 +14,7 @@
   </Folder>
   <Folder Name="/tests/units/">
     <Project Path="Application.UnitTests/Application.UnitTests.csproj" Id="0ed072d7-fe73-4d9a-a64a-b5b83f163da7" />
+    <Project Path="WebApi.UnitTests/WebApi.UnitTests.csproj" Id="00d29075-b914-4520-a8fa-21e8d93c7ec4" />
   </Folder>
   <Project Path="ABCStore.AppHost/ABCStore.AppHost.csproj" />
   <Project Path="ABCStore.ServiceDefaults/ABCStore.ServiceDefaults.csproj" />

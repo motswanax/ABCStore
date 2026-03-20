@@ -23,20 +23,21 @@ public sealed class ValidateFluentValidationFilter(IServiceProvider serviceProvi
             if (validator is null)
                 continue;
 
-            var validationContextType = typeof(ValidationContext<>).MakeGenericType(arg.GetType());
+            var argType = arg.GetType();
+            var validationContextType = typeof(ValidationContext<>).MakeGenericType(argType);
             var validationContext = Activator.CreateInstance(validationContextType, arg);
 
             var validateAsync = validatorType.GetMethod("ValidateAsync", [validationContextType, typeof(CancellationToken)]);
             if (validateAsync is null)
                 continue;
 
-            var task = (Task)validateAsync.Invoke(validator, [validationContext!, context.HttpContext.RequestAborted])!;
-            await task.ConfigureAwait(false);
+            var validateTask = (Task)validateAsync.Invoke(validator, [validationContext!, context.HttpContext.RequestAborted])!;
+            await validateTask.ConfigureAwait(false);
 
-            var resultProperty = task.GetType().GetProperty("Result");
-            var validationResult = resultProperty?.GetValue(task);
+            var resultProperty = validateTask.GetType().GetProperty("Result");
+            var validationResult = resultProperty?.GetValue(validateTask);
+
             var isValid = (bool?)validationResult?.GetType().GetProperty("IsValid")?.GetValue(validationResult) ?? true;
-
             if (isValid)
                 continue;
 
