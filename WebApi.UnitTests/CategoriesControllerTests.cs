@@ -124,4 +124,45 @@ public class CategoriesControllerTests(CustomWebApplicationFactory factory) : IC
         body.Messages.ShouldNotBeNull();
         body.Messages.Count.ShouldBeGreaterThan(0);
     }
+
+    [Fact(DisplayName = "TC6: Delete Category returns OK for valid id")]
+    public async Task DeleteCategory_WithValidId_ReturnsOk()
+    {
+        // Arrange
+        var create = new CreateCategoryRequest
+        {
+            Name = "Clothing",
+            Description = "All clothing"
+        };
+
+        var createResponse = await _client.PostAsJsonAsync("/api/Categories/create", create);
+        createResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var createdBody = await createResponse.Content.ReadFromJsonAsync<ResponseWrapper<int>>();
+        createdBody.ShouldNotBeNull();
+        createdBody.Data.ShouldBeGreaterThan(0);
+
+        // Act
+        var response = await _client.DeleteAsync($"/api/Categories/delete/{createdBody.Data}");
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var body = await response.Content.ReadFromJsonAsync<ResponseWrapper<int>>();
+        body.ShouldNotBeNull();
+        body.IsSuccessful.ShouldBeTrue();
+        body.Data.ShouldBe(createdBody.Data);
+    }
+
+    [Fact(DisplayName = "TC7: Delete Category returns OK but unsuccessful wrapper when category not found")]
+    public async Task DeleteCategory_WithNonExistingId_ReturnsOkWithFailureWrapper()
+    {
+        // Act
+        var response = await _client.DeleteAsync("/api/Categories/delete/99999");
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var body = await response.Content.ReadFromJsonAsync<ResponseWrapper<int>>();
+        body.ShouldNotBeNull();
+        body.IsSuccessful.ShouldBeFalse();
+        body.Messages.ShouldContain("Category not found.");
+    }
 }

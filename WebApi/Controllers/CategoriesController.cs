@@ -34,11 +34,13 @@ public class CategoriesController(ISender mediator) : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing category with the specified details.
+    /// Updates the details of an existing category using the provided request data.
     /// </summary>
     /// <param name="request">The request object containing the updated category information. Cannot be null.</param>
     /// <param name="ct">A cancellation token that can be used to cancel the operation.</param>
-    /// <returns>An IActionResult containing a ResponseWrapper that indicates the result of the update operation.</returns>
+    /// <returns>An IActionResult containing a ResponseWrapper that indicates the result of the update operation. Returns a 200
+    /// OK response if the update is successful, 400 Bad Request if the request is invalid, or 404 Not Found if the
+    /// category does not exist.</returns>
     [HttpPut("update")]
     [EndpointName("UpdateCategory")]
     [Consumes("application/json")]
@@ -46,9 +48,30 @@ public class CategoriesController(ISender mediator) : ControllerBase
     [Tags("Categories")]
     [ProducesResponseType(typeof(ResponseWrapper), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseWrapper), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ResponseWrapper), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> UpdateCategory([FromBody] UpdateCategoryRequest request, CancellationToken ct)
     {
         var result = await mediator.Send(new UpdateCategoryCommand { Request = request }, ct);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Deletes the category with the specified identifier.
+    /// </summary>
+    /// <param name="categoryId">The unique identifier of the category to delete.</param>
+    /// <param name="ct">A cancellation token that can be used to cancel the operation.</param>
+    /// <returns>An IActionResult containing a ResponseWrapper that indicates the result of the delete operation. Returns a 200
+    /// OK response if the category is deleted successfully, or a 404 Not Found response if the category does not exist.</returns>
+    [HttpDelete("delete/{categoryId}")]
+    [EndpointName("DeleteCategory")]
+    [Produces("application/json")]
+    [Consumes("application/json")]
+    [Tags("Categories")]
+    [ProducesResponseType(typeof(ResponseWrapper), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseWrapper), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteCategory(int categoryId, CancellationToken ct)
+    {
+        var result = await mediator.Send(new DeleteCategoryCommand { CategoryId = categoryId }, ct);
         return Ok(result);
     }
 }
