@@ -5,22 +5,14 @@ using Common.Wrappers;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoriesController : ControllerBase
+public class CategoriesController(ISender mediator) : ControllerBase
 {
-    private readonly ISender _mediator;
-
-    public CategoriesController(ISender mediator)
-    {
-        _mediator = mediator;
-    }
-
     /// <summary>
     /// Creates a new category.
     /// </summary>
@@ -37,7 +29,7 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ResponseWrapper), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request, CancellationToken ct)
     {
-        var result = await _mediator.Send(new CreateCategoryCommand { Request = request }, ct);
+        var result = await mediator.Send(new CreateCategoryCommand { Request = request }, ct);
         return result.IsSuccessful ? Ok(result) : BadRequest(result);
     }
 }
