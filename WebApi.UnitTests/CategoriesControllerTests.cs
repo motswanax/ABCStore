@@ -17,7 +17,7 @@ public class CategoriesControllerTests : IClassFixture<CustomWebApplicationFacto
         _client = factory.CreateClient();
     }
 
-    [Fact(DisplayName = "Create Category returns OK for valid request")]
+    [Fact(DisplayName = "TC1: Create Category returns OK for valid request")]
     public async Task CreateCategory_WithValidRequest_ReturnsOk()
     {
         // Arrange
@@ -38,7 +38,7 @@ public class CategoriesControllerTests : IClassFixture<CustomWebApplicationFacto
         body.Data.ShouldBeGreaterThan(0);
     }
 
-    [Fact(DisplayName = "Create Category returns BadRequest ResponseWrapper for invalid request")]
+    [Fact(DisplayName = "TC2: Create Category returns BadRequest ResponseWrapper for invalid request")]
     public async Task CreateCategory_WithInvalidRequest_ReturnsBadRequestWithMessages()
     {
         // Arrange

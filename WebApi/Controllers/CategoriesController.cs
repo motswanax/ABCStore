@@ -14,12 +14,12 @@ namespace WebApi.Controllers;
 public class CategoriesController(ISender mediator) : ControllerBase
 {
     /// <summary>
-    /// Creates a new category.
+    /// Creates a new category using the specified request data.
     /// </summary>
-    /// <remarks>
-    /// Returns <see cref="ResponseWrapper{T}"/> with the created category id in <c>Data</c>.
-    /// If validation fails, returns <see cref="ResponseWrapper"/> with validation errors in <c>Messages</c>.
-    /// </remarks>
+    /// <param name="request">The details of the category to create. Cannot be null.</param>
+    /// <param name="ct">A cancellation token that can be used to cancel the operation.</param>
+    /// <returns>An IActionResult containing a ResponseWrapper with the identifier of the newly created category if successful,
+    /// or a ResponseWrapper with error details if the request is invalid.</returns>
     [HttpPost("create")]
     [EndpointName("CreateCategory")]
     [Consumes("application/json")]
@@ -30,6 +30,6 @@ public class CategoriesController(ISender mediator) : ControllerBase
     public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryRequest request, CancellationToken ct)
     {
         var result = await mediator.Send(new CreateCategoryCommand { Request = request }, ct);
-        return result.IsSuccessful ? Ok(result) : BadRequest(result);
+        return Ok(result);
     }
 }
