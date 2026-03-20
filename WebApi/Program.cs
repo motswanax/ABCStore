@@ -1,9 +1,13 @@
 using Application;
 using Application.Features.Categories.Validations;
 
+using Common.Wrappers;
+
 using FluentValidation;
 
 using Infrastructure;
+
+using Microsoft.AspNetCore.Mvc;
 
 using NSwag.AspNetCore;
 
@@ -19,6 +23,18 @@ builder.AddServiceDefaults();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidateFluentValidationFilter>();
+})
+.ConfigureApiBehaviorOptions(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage) ? "Invalid request." : e.ErrorMessage)
+            .ToList();
+
+        return new BadRequestObjectResult(ResponseWrapper.Fail(errors));
+    };
 });
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
