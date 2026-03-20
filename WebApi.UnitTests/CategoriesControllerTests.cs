@@ -4,26 +4,13 @@ using System.Net.Http.Json;
 using Common.Requests.Categories;
 using Common.Wrappers;
 
-using Infrastructure.Contexts;
-
-using Microsoft.Extensions.DependencyInjection;
-
-using Domain;
-
 using Shouldly;
 
 namespace WebApi.UnitTests;
 
-public class CategoriesControllerTests : IClassFixture<CustomWebApplicationFactory>
+public class CategoriesControllerTests(CustomWebApplicationFactory factory) : IClassFixture<CustomWebApplicationFactory>
 {
-    private readonly HttpClient _client;
-    private readonly CustomWebApplicationFactory _factory;
-
-    public CategoriesControllerTests(CustomWebApplicationFactory factory)
-    {
-        _factory = factory;
-        _client = factory.CreateClient();
-    }
+    private readonly HttpClient _client = factory.CreateClient();
 
     [Fact(DisplayName = "TC1: Create Category returns OK for valid request")]
     public async Task CreateCategory_WithValidRequest_ReturnsOk()
